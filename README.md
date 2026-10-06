@@ -77,7 +77,10 @@ Per il tuo id personale: scrivi al bot in privato, poi guarda `getUpdates` come 
 
 ## Provare l'invio subito (senza aspettare un avviso nuovo)
 
-In locale, con Python 3.9 o superiore:
+Dalla scheda **Actions** → "Avvisi Economia → Telegram" → **Run workflow** → nel campo *resend* metti ad esempio `2`:
+invia i 2 avvisi più recenti nel gruppo anche se già visti, senza toccare `seen.json`.
+
+Oppure in locale, con Python 3.9 o superiore:
 
 ```bash
 pip install -r requirements.txt

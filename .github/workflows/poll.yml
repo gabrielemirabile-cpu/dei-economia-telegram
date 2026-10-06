@@ -4,6 +4,11 @@ on:
   schedule:
     - cron: "*/5 * * * *"   # ogni 5 minuti (minimo consentito da GitHub)
   workflow_dispatch:         # permette di lanciarlo a mano dalla scheda Actions
+    inputs:
+      resend:
+        description: "Invio di prova: quanti avvisi recenti reinviare (0 = controllo normale)"
+        default: "0"
+        required: false
 
 permissions:
   contents: write            # serve per salvare seen.json nel repo
@@ -31,7 +36,13 @@ jobs:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           ADMIN_CHAT_ID: ${{ secrets.ADMIN_CHAT_ID }}
-        run: python bot.py
+          RESEND: ${{ inputs.resend }}
+        run: |
+          if [ -n "$RESEND" ] && [ "$RESEND" != "0" ]; then
+            python bot.py --resend "$RESEND"
+          else
+            python bot.py
+          fi
 
       - name: Salva lo stato (avvisi già inviati)
         if: always()
